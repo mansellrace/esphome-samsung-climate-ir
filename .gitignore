@@ -1,0 +1,16 @@
+# Python / ESPHome build environment
+.venv/
+__pycache__/
+*.pyc
+
+# ESPHome build output
+.esphome/
+secrets.yaml
+
+# Editors
+.vscode/
+.idea/
+
+# Claude Code
+.claude/
+CLAUDE.md

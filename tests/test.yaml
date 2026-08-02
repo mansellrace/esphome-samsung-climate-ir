@@ -1,0 +1,71 @@
+# Compile test: exercises both the renamed and the default fan mode paths.
+# Never meant to be flashed, only `esphome config` / `esphome compile`.
+
+esphome:
+  name: samsung-climate-ir-test
+
+external_components:
+  - source:
+      type: local
+      path: ../components
+
+esp8266:
+  board: d1_mini
+
+logger:
+
+api:
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: "test-ssid"
+  password: "test-password"
+
+remote_receiver:
+  id: ir_rx
+  pin:
+    number: D6
+    inverted: true
+  tolerance: 40%
+  idle: 25ms
+
+remote_transmitter:
+  id: ir_tx
+  pin: D7
+  carrier_duty_percent: 100%
+
+sensor:
+  - platform: template
+    id: room_temperature
+    lambda: "return 21.0;"
+    update_interval: 60s
+
+climate:
+  # Same fan mode labels as the original custom component.
+  - platform: samsung_climate_ir
+    id: clima
+    name: "Clima"
+    receiver_id: ir_rx
+    transmitter_id: ir_tx
+    sensor: room_temperature
+    fan_mode_names:
+      quiet: "Quiet"
+      low: "Velocità 1"
+      medium: "Velocità 2"
+      high: "Velocità 3"
+      turbo: "Velocità 4"
+
+  # Defaults: standard fan modes plus the built-in "Turbo" custom one.
+  - platform: samsung_climate_ir
+    id: clima_default
+    name: "Clima default"
+    transmitter_id: ir_tx
+    transmit_on_boot: true
+    boost_timeout: 15min
+
+button:
+  - platform: samsung_climate_ir
+    samsung_climate_ir_id: clima
+    name: "Beep"
