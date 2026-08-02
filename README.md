@@ -144,21 +144,22 @@ button:
     name: "Beep"
 ```
 
+Silenzia o riattiva il beep di conferma del climatizzatore — quello che suona a ogni comando ricevuto.
+
 Il protocollo Samsung ha un bit di beep (byte 13, bit 2) che è un **toggle**: commuta l'impostazione
 sull'unità senza comunicare lo stato risultante. Per questo è un button e non uno switch — ESPHome non
-può sapere se il climatizzatore stia suonando o meno.
+può sapere se in quel momento il climatizzatore stia suonando o meno, sa solo invertire l'impostazione.
 
-Su un AR12TXEAAWKNEU è documentato che funzioni
-([IRremoteESP8266#1669](https://github.com/crankyoldgit/IRremoteESP8266/issues/1669)), ma **sui modelli
-più vecchi potrebbe non fare nulla**: il firmware precedente non ha mai toccato quel bit, quindi se il
-tuo climatizzatore suona già a ogni comando è possibile che il beep sia incondizionato. Provalo e, se
-non serve, togli il blocco `button`.
+Verificato funzionante su Samsung Maldives, ed è documentato anche su AR12TXEAAWKNEU
+([IRremoteESP8266#1669](https://github.com/crankyoldgit/IRremoteESP8266/issues/1669)). Su modelli
+diversi potrebbe non essere supportato: se premendo il pulsante non cambia nulla, togli il blocco
+`button`.
 
 ## Funzioni supportate
 
 5 modalità operative (auto / caldo / freddo / deumidificazione / solo ventilazione), temperatura 16-30 °C,
-6 velocità di ventola comprese Quiet e Turbo, oscillazione verticale, modalità Fast. Quando si imposta il
-climatizzatore dal telecomando l'entità su Home Assistant viene aggiornata.
+6 velocità di ventola comprese Quiet e Turbo, oscillazione verticale, modalità Fast e silenziamento del
+beep. Quando si imposta il climatizzatore dal telecomando l'entità su Home Assistant viene aggiornata.
 
 ![more_info](img/more_info.png)
 
